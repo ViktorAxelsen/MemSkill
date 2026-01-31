@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" alt="LLMRouter Logo" width="200">
+  <img src="assets/logo.png" alt="LLMRouter Logo" width="300">
 </div>
 
 
