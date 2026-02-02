@@ -26,27 +26,42 @@
 
 
 
-## ✨ Overview
+## 🧩 Overview
+
+**MemSkill** is a framework for evolving memory skills in long‑horizon, self‑improving agents. It brings a data‑driven feedback loop into the memory module so that memory skills can be learned, evolved, and reused—improving stability, generalization, and maintainability in long, open‑ended interactions.
+
+**Framework Features**:
+- Evolve your own memory skills by iteratively discovering better memory operations from data.
+- Upgrade memory from static rules to an evolvable capability, strengthening long‑term reasoning and transfer.
+- Modular, reusable design that adapts across datasets and task settings.
+- Multi‑API‑key round‑robin to improve throughput and stability.
+- Multi‑threading / multi‑processing acceleration for training and evaluation at scale.
+- ......
 
 
 
 
 
+
+
+<div align="center">
+  <img src="./assets/model.png" width="700" alt="MemSkill">
+</div>
 
 
 
 ## 📰 News
 
 
-- 🚀 **[2026-02]**: **MemSkill** is officially released — a new paradigm for agent memory that learns reusable skills 🔁 and evolves them from data over time 🧠, improving memory quality and generalization across long, open-ended interactions ✨
+- 🚀 **[2026-02]**: **MemSkill** is officially released — a new paradigm for agent memory that learns reusable skills 🔁 and evolves them from data over time 🧠, improving memory quality and generalization across long, open-ended interactions ✨. **Stay tuned! More detailed instruction updates coming soon.**
 
 
 
 
 
-## 🔗 Links
+<!-- ## 🔗 Links
 
-- [TBD](#-TBD)
+- [TBD](#-TBD) -->
 
 
 
@@ -74,39 +89,48 @@ pip install -r requirements.txt
 
 ### 📊 Preparing Training Data
 
+We build training data from the following datasets. Please follow the linked sources and keep the same splits where specified.
 
+After downloading, place the data under the `data/` folder.
 
-
-
+- [Locomo](https://github.com/snap-research/locomo)
+- [LongMemEval-S](https://github.com/xiaowu0162/LongMemEval): use the split file `data/longmemeval_s_splits.json`.
+- [HotpotQA](https://huggingface.co/datasets/BytedTsinghua-SIA/hotpotqa/tree/main)
+- [ALFWorld](https://github.com/alfworld/alfworld)
 
 
 
 
 ## 🧪 Experiments
 
+Before running, please check the parameter configuration in the `.sh` scripts.
 
-> \[!IMPORTANT\]
+> [!IMPORTANT]
 >
-> **Make sure to set your own API KEY in the `train.sh` script before running.**
-
-
+> **Make sure to set your own API base and API key in the `.sh` scripts before running.**
 
 ### 🖥️ Training
 
+Run a training script depending on the dataset you want to use:
 
-
-
-
-
+```bash
+bash train_locomo.sh
+# or
+bash train_alfworld.sh
+```
 
 ### 🧭 Evaluation
 
+Run the evaluation script for the corresponding dataset:
 
+```bash
+bash eval_locomo.sh
+bash eval_alfworld.sh
+bash eval_hp.sh
+bash eval_longmemeval.sh
+```
 
-
-
-
-
+**Stay tuned! More detailed instruction updates coming soon.**
 
 
 

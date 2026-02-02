@@ -1,0 +1,26 @@
+# Core ML / utilities
+numpy
+torch==2.6.0+cu124
+tqdm
+nltk
+sentence-transformers
+transformers
+openai
+tiktoken
+vllm==0.6.3
+json-repair
+regex
+wandb
+scikit-learn
+
+# Retrieval (optional, used if available)
+faiss-cpu
+langchain-community
+langchain-core
+
+# Interactive environments / datasets
+textworld
+alfworld
+gymnasium
+gym
+minigrid
