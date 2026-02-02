@@ -45,7 +45,7 @@
 
 
 <div align="center">
-  <img src="./assets/model.png" width="700" alt="MemSkill">
+  <img src="./assets/model.png" width="800" alt="MemSkill">
 </div>
 
 
