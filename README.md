@@ -92,7 +92,11 @@ cd MemSkill
 conda create -n memskill python=3.10
 conda activate memskill
 
-# pip install
+# vllm
+pip install vllm==0.6.3
+# PyTorch
+pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+# Others
 pip install -r requirements.txt
 ```
 
