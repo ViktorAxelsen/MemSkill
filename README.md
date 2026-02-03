@@ -11,8 +11,8 @@
 
 <div align="center">
   <p>
-    <a href='x'><img src='https://img.shields.io/badge/Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white'></a>
-    <a href='x'><img src='https://img.shields.io/badge/arXiv-xxxx.xxxxx-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white'></a>
+    <a href='https://viktoraxelsen.github.io/MemSkill/'><img src='https://img.shields.io/badge/Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white'></a>
+    <a href='https://arxiv.org/abs/2602.02474'><img src='https://img.shields.io/badge/arXiv-2602.02474-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white'></a>
     <br>
     <a href="https://github.com/ViktorAxelsen/MemSkill/stargazers"><img src='https://img.shields.io/github/stars/ViktorAxelsen/MemSkill?color=f1e05a&style=for-the-badge&logo=star&logoColor=white' /></a>
     <a href="https://github.com/ViktorAxelsen/MemSkill/forks"><img src='https://img.shields.io/github/forks/ViktorAxelsen/MemSkill?color=2ea44f&style=for-the-badge&logo=git&logoColor=white' /></a>
@@ -140,7 +140,7 @@ bash eval_longmemeval.sh
 @article{MemSkill,
   title={MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents},
   author={Haozhen Zhang and Quanyu Long and Jianzhu Bao and Tao Feng and Weizhi Zhang and Haodong Yue and Wenya Wang},
-  journal={arXiv preprint arXiv:xxxx.xxxxx},
+  journal={arXiv preprint arXiv:2602.02474},
   year={2026}
 }
 ```

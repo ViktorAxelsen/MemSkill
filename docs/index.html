@@ -100,11 +100,11 @@
             </span>
           </div>
 
-          <div class="publication-logos" style="margin: 18px 0 6px; display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;">
-            <img src="./static/figs/ntu.png" alt="NTU" style="height: 48px;"/>
-            <img src="./static/figs/uiuc.png" alt="UIUC" style="height: 48px;"/>
-            <img src="./static/figs/uic.png" alt="UIC" style="height: 48px;"/>
-            <img src="./static/figs/thu.png" alt="Tsinghua" style="height: 48px;"/>
+          <div class="publication-logos" style="margin: 20px 0 10px; display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap;">
+            <img src="./static/figs/ntu.png" alt="NTU" style="height: 60px; width: auto; object-fit: contain;"/>
+            <img src="./static/figs/uiuc.png" alt="UIUC" style="height: 60px; width: auto; object-fit: contain;"/>
+            <img src="./static/figs/uic.png" alt="UIC" style="height: 60px; width: auto; object-fit: contain;"/>
+            <img src="./static/figs/thu.png" alt="Tsinghua" style="height: 60px; width: auto; object-fit: contain;"/>
           </div>
 
           <div class="is-size-5 publication-authors">
@@ -177,7 +177,7 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
           <div class="column is-four-fifths">
-              <h2 class="title is-3">MemSkill</h2>
+              <h2 class="title is-3">Overview</h2>
               <div class="content has-text-justified">
                   <p>
                     Prior methods interleave handcrafted operations with LLM calls to incrementally extract and revise memory turn by turn, while MemSkill selects a small set of skills from a shared skill bank and applies them in one pass to produce skill-guided memories.
@@ -185,7 +185,7 @@
               </div>
               <div>
                   <img src="./static/figs/intro.png" alt="model figure" width="800px"/>
-                  <p>Comparison between (a) prior turn-level, handcrafted operations and (b) MemSkill's span-level, skill-conditioned generation.</p>
+                  <p><b>Comparison between (a) prior turn-level, handcrafted operations and (b) MemSkill's span-level, skill-conditioned generation.</b></p>
               </div>
           </div>
       </div>
@@ -206,7 +206,7 @@
         </div>
         <div>
           <img src="./static/figs/model.png" alt="model figure" width="800px"/>
-          <p>MemSkill architecture overview.</p>
+                  <p><b>MemSkill architecture overview.</b></p>
         </div>
       </div>
     </div>
@@ -226,8 +226,8 @@
                       Across LoCoMo, LongMemEval, and ALFWorld, MemSkill delivers the strongest overall results among all compared methods. On the conversational benchmarks, MemSkill achieves the best LLM-judge scores on both LoCoMo and LongMemEval within each base-model block, indicating higher-quality constructed memories than hand-designed systems such as MemoryBank, A-MEM, and MemoryOS. On ALFWorld, MemSkill also reaches the highest success rates on both seen and unseen splits, showing that skill-guided memory helps not only offline querying but also long-horizon embodied decision making. Notably, MemSkill is trained only with LLaMA, yet its learned skill bank transfers to Qwen without any additional training and remains highly competitive, demonstrating strong generalization across base models and suggesting that the evolved skills capture reusable memory behaviors rather than benchmark-specific heuristics.
                   </p>
               </div>
-              <img src="./static/figs/exp.png" alt="experimental results" width="600px"/>
-              <p>Experimental results on LoCoMo, LongMemEval, and ALFWorld.</p>
+              <img src="./static/figs/exp.png" alt="experimental results" width="800px"/>
+                  <p><b>Experimental results on LoCoMo, LongMemEval, and ALFWorld.</b></p>
           </div>
       </div>
     </div>
@@ -248,8 +248,8 @@
                     Across all three context lengths, MemSkill consistently outperforms both baselines, with the margin becoming most pronounced in the hardest 200-document setting. In addition, varying the number of selected skills provides a lightweight sensitivity check: performance generally improves as we increase the skill budget, and the best results are achieved with larger Top-$K$ (typically $K{=}7$). These findings indicate that the learned skills transfer beyond dialogue-style memory benchmarks and remain useful for document-centric QA, while the ability to compose more skills becomes increasingly valuable as context difficulty grows.
                   </p>
               </div>
-              <img src="./static/figs/gen.png" alt="cost rewards" width="600px"/>
-              <p>Extensive analysis of skill generation under distribution shift</p>
+              <img src="./static/figs/gen.png" alt="cost rewards" width="800px"/>
+                  <p><b>Extensive analysis of skill generation under distribution shift</b></p>
           </div>
       </div>
     </div>
@@ -270,8 +270,8 @@
                     For LoCoMo, the highlighted skills focus on capturing temporal context and activity details, suggesting that dialogue memory often needs lightweight structure, such as when something happened and the contextual details that make an event retrievable later. For ALFWorld, the skills prioritize action constraints and object locations, indicating that embodied success depends on maintaining a compact, actionable state summary that supports long-horizon execution. Overall, these examples show how skill evolution yields setting-relevant behaviors while keeping the skill bank reusable and transferable.
                   </p>
               </div>
-              <img src="./static/figs/case.png" alt="discussion" width="600px"/>
-              <p>Case Study</p>
+              <img src="./static/figs/case.png" alt="discussion" width="800px"/>
+                  <p><b>Case Study on LoCoMo and ALFWorld</b></p>
           </div>
       </div>
     </div>
