@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents">
+  <meta name="keywords" content="Large Language Models, Agent Memory, Self-evolving Agents, Agent Skills">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://github.com/ViktorAxelsen/MemSkill">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://github.com/ViktorAxelsen/MemSkill">
+            MemSkill
+          </a>
+          <a class="navbar-item" href="https://github.com/ViktorAxelsen/BudgetMem">
+            BudgetMem
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a>Haozhen Zhang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a>Quanyu Long</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a>Jianzhu Bao</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a>Tao Feng</a><sup>2</sup>,</span>
+            <span class="author-block">
+              <a>Weizhi Zhang</a><sup>3</sup>,</span>
+            <span class="author-block">
+              <a>Haodong Yue</a><sup>4</sup>,</span>
+            <span class="author-block">
+              <a>Wenya Wang</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="publication-logos" style="margin: 18px 0 6px; display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;">
+            <img src="./static/figs/ntu.png" alt="NTU" style="height: 48px;"/>
+            <img src="./static/figs/uiuc.png" alt="UIUC" style="height: 48px;"/>
+            <img src="./static/figs/uic.png" alt="UIC" style="height: 48px;"/>
+            <img src="./static/figs/thu.png" alt="Tsinghua" style="height: 48px;"/>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Nanyang Technological University</span><br>
+            <span class="author-block"><sup>2</sup>University of Illinois at Urbana-Champaign</span><br>
+            <span class="author-block"><sup>3</sup>University of Illinois Chicago</span><br>
+            <span class="author-block"><sup>4</sup>Tsinghua University</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2602.02474"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/ViktorAxelsen/MemSkill"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href="xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-X"></i>
+                  </span>
+                  <span>Twitter</span>
+                  </a>
+              </span> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            MemSkill shifts agent memory from turn-level, hand-designed operations to a new paradigm of span-level, skill-conditioned generation. Instead of applying a fixed procedure after every single turn, MemSkill groups interaction history into larger spans and conditions memory construction on a composed set of skills, making memory extraction more scalable, reusable, and easier to adapt across tasks and domains.
+          </p>
+          <p>
+            Crucially, MemSkill treats the skill bank as a living component: skills are not only invoked but also iteratively refined and expanded from hard cases, so the system can continually improve without relying on extensive manual redesign. Across long conversations, long-form text, and embodied interaction, this approach yields stronger memory and more robust downstream behavior, pointing toward self-evolving memory management for large language model agents.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+              <h2 class="title is-3">MemSkill</h2>
+              <div class="content has-text-justified">
+                  <p>
+                    Prior methods interleave handcrafted operations with LLM calls to incrementally extract and revise memory turn by turn, while MemSkill selects a small set of skills from a shared skill bank and applies them in one pass to produce skill-guided memories.
+                  </p>
+              </div>
+              <div>
+                  <img src="./static/figs/intro.png" alt="model figure" width="800px"/>
+                  <p>Comparison between (a) prior turn-level, handcrafted operations and (b) MemSkill's span-level, skill-conditioned generation.</p>
+              </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">MemSkill Architecture</h2>
+        <div class="content has-text-justified">
+          <p>
+            MemSkill is built around a shared skill bank and three cooperating components. Given an interaction trace, we process it span by span: for each span, a controller learns to select a small set of relevant skills based on the current span and retrieved memories, and an LLM-based executor conditions on the selected skills to generate skill-guided memory for that span in a single step. In parallel, a designer periodically reviews representative hard cases collected during training and uses them to refine existing skills and propose new ones, expanding the skill bank over time. Together, this yields a closed loop where the agent improves both how it uses skills and what the skills are, enabling progressively stronger memory construction without relying on a fixed, hand-designed operation pipeline.
+          </p>
+        </div>
+        <div>
+          <img src="./static/figs/model.png" alt="model figure" width="800px"/>
+          <p>MemSkill architecture overview.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+              <h2 class="title is-3">Comparison Experiments</h2>
+              <div class="content has-text-justified">
+                  <p>
+                      Across LoCoMo, LongMemEval, and ALFWorld, MemSkill delivers the strongest overall results among all compared methods. On the conversational benchmarks, MemSkill achieves the best LLM-judge scores on both LoCoMo and LongMemEval within each base-model block, indicating higher-quality constructed memories than hand-designed systems such as MemoryBank, A-MEM, and MemoryOS. On ALFWorld, MemSkill also reaches the highest success rates on both seen and unseen splits, showing that skill-guided memory helps not only offline querying but also long-horizon embodied decision making. Notably, MemSkill is trained only with LLaMA, yet its learned skill bank transfers to Qwen without any additional training and remains highly competitive, demonstrating strong generalization across base models and suggesting that the evolved skills capture reusable memory behaviors rather than benchmark-specific heuristics.
+                  </p>
+              </div>
+              <img src="./static/figs/exp.png" alt="experimental results" width="600px"/>
+              <p>Experimental results on LoCoMo, LongMemEval, and ALFWorld.</p>
+          </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+              <h2 class="title is-3">Skill Generation Under Distribution Shift</h2>
+              <div class="content has-text-justified">
+                  <p>
+                    We further test whether the skill bank learned on LoCoMo remains effective under a clear shift in interaction format and evidence structure by transferring it directly to HotpotQA. We report results on three increasingly difficult settings with 50, 100, and 200 concatenated documents.
+                  </p>
+                  <p>
+                    Across all three context lengths, MemSkill consistently outperforms both baselines, with the margin becoming most pronounced in the hardest 200-document setting. In addition, varying the number of selected skills provides a lightweight sensitivity check: performance generally improves as we increase the skill budget, and the best results are achieved with larger Top-$K$ (typically $K{=}7$). These findings indicate that the learned skills transfer beyond dialogue-style memory benchmarks and remain useful for document-centric QA, while the ability to compose more skills becomes increasingly valuable as context difficulty grows.
+                  </p>
+              </div>
+              <img src="./static/figs/gen.png" alt="cost rewards" width="600px"/>
+              <p>Extensive analysis of skill generation under distribution shift</p>
+          </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+              <h2 class="title is-3">Case Study</h2>
+              <div class="content has-text-justified">
+                  <p>
+                    To make MemSkill more interpretable, we inspect the final evolved skill bank and report representative skills learned from LoCoMo and ALFWorld. A key takeaway is that the evolved skills reflect what each setting repeatedly requires memory to preserve, without being manually hard-coded.
+                  </p>
+                  <p>
+                    For LoCoMo, the highlighted skills focus on capturing temporal context and activity details, suggesting that dialogue memory often needs lightweight structure, such as when something happened and the contextual details that make an event retrievable later. For ALFWorld, the skills prioritize action constraints and object locations, indicating that embodied success depends on maintaining a compact, actionable state summary that supports long-horizon execution. Overall, these examples show how skill evolution yields setting-relevant behaviors while keeping the skill bank reusable and transferable.
+                  </p>
+              </div>
+              <img src="./static/figs/case.png" alt="discussion" width="600px"/>
+              <p>Case Study</p>
+          </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{MemSkill,
+  author    = {Haozhen Zhang and Quanyu Long and Jianzhu Bao and Tao Feng and Weizhi Zhang and Haodong Yue and Wenya Wang},
+  title     = {MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents},
+  journal   = {arXiv preprint arXiv:2602.02474},
+  year      = {2026},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="https://arxiv.org/abs/2602.02474">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/ViktorAxelsen/MemSkill" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Acknowledgement: this website is based on the template from <a
+            href="https://github.com/nerfies/nerfies.github.io">here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
