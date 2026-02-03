@@ -96,6 +96,8 @@ conda activate memskill
 pip install vllm==0.6.3
 # PyTorch
 pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+# Flash-Attn (or you can specify `--disable-flash-attn` in the .sh scripts to disable it)
+pip install flash-attn --no-build-isolation
 # Others
 pip install -r requirements.txt
 ```
@@ -255,6 +257,8 @@ These are the parameters most frequently used in the training/eval `.sh` scripts
 - `--api`: use API-based inference
 - `--api-base`: API endpoint
 - `--api-key`: one or more API keys
+- `--disable-flash-attn`: Flash Attention is enabled by default; add this flag to disable it.
+
 
 **Retrieval & memory**
 - `--retriever`: retriever type (`contriever`, `dpr`, `dragon`)
@@ -288,6 +292,16 @@ These are the parameters most frequently used in the training/eval `.sh` scripts
 - `--alfworld-offline-data`: offline trajectories
 - `--alfworld-eval-file`: eval split
 - `--alfworld-eval-query-source`: `objective` or `first_observation`
+
+
+**W&B (logging)**
+- `--wandb-project`: W&B project name.
+- `--wandb-run-name`: W&B run name.
+- `--wandb-key`: W&B API key (optional; you can also set `WANDB_API_KEY` in the environment).
+
+
+
+❗For the full list of configuration options, see `src/config.py`.
 
 
 

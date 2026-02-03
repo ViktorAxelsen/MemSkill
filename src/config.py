@@ -194,13 +194,13 @@ def get_agentic_memory_args():
                         help='Query source for retrieval in ALFWorld eval')
     parser.add_argument('--alfworld-offline-data', type=str, default="./data/alfworld_train_offline.json",
                         help='Path to offline ALFWorld expert trajectories (pair training)')
-    parser.add_argument('--alfworld-pair-a-min', type=int, default=60,
+    parser.add_argument('--alfworld-pair-a-min', type=int, default=40,
                         help='Min number of trajectories in batch A (offline pair training)')
-    parser.add_argument('--alfworld-pair-a-max', type=int, default=80,
+    parser.add_argument('--alfworld-pair-a-max', type=int, default=60,
                         help='Max number of trajectories in batch A (offline pair training)')
     parser.add_argument('--alfworld-pair-b-size', type=int, default=8,
                         help='Batch B size (interactive envs); 0 uses --batch-size')
-    parser.add_argument('--alfworld-pair-same-type-prob', type=float, default=0.8,
+    parser.add_argument('--alfworld-pair-same-type-prob', type=float, default=1.0,
                         help='Probability A/B share same task type in offline pair sampling')
     parser.add_argument('--alfworld-pair-chunk-size', type=int, default=2048,
                         help='Token budget for batch-A chunking in offline pair training')
@@ -224,7 +224,7 @@ def get_agentic_memory_args():
     parser.add_argument('--max-new-tokens', type=int, default=2048)
     parser.add_argument('--llm-judge-model', type=str, default='openai/gpt-oss-120b',
                         help='Model for LLM judge scoring')
-    parser.add_argument('--batch-size', type=int, default=4, help='Episodes per PPO update')
+    parser.add_argument('--batch-size', type=int, default=16, help='Episodes per PPO update')
 
     # Retriever args
     parser.add_argument('--retriever', type=str, default='contriever', choices=['dpr', 'contriever', 'dragon'])
@@ -248,11 +248,11 @@ def get_agentic_memory_args():
                         help='Fusion strategy for session and memory embeddings')
     parser.add_argument('--state-fusion-tau', type=float, default=1.0,
                         help='Temperature for sim_weighted fusion (higher -> flatter weights)')
-    parser.add_argument('--encode-batch-size', type=int, default=64,
+    parser.add_argument('--encode-batch-size', type=int, default=8,
                         help='Batch size for text encoding (to avoid OOM on large batches)')
 
     # Training args
-    parser.add_argument('--inner-epochs', type=int, default=20)
+    parser.add_argument('--inner-epochs', type=int, default=100)
     parser.add_argument('--outer-epochs', type=int, default=10)
     parser.add_argument('--controller-lr', type=float, default=1e-4)
     parser.add_argument('--gamma', type=float, default=0.99, help='Discount factor')
@@ -335,6 +335,8 @@ def get_agentic_memory_args():
     # Wandb args
     parser.add_argument('--wandb-project', type=str, default='memskill', help='Wandb project name')
     parser.add_argument('--wandb-run-name', type=str, default=None, help='Wandb run name')
+    parser.add_argument('--wandb-key', type=str, default=None,
+                        help='Wandb API key (optional; can also use WANDB_API_KEY env var)')
 
     args = parser.parse_args()
     return args

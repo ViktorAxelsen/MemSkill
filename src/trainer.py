@@ -845,7 +845,9 @@ class BaseTrainer:
         """
         # Initialize wandb
         if mp.current_process().name == "MainProcess":
-            wandb.login(key="[YOUR_WANDB_KEY]", relogin=True)
+            wandb_key = getattr(self.args, 'wandb_key', None)
+            if wandb_key:
+                wandb.login(key=wandb_key, relogin=True)
         wandb.init(
             project=getattr(self.args, 'wandb_project', 'memskill'),
             name=getattr(self.args, 'wandb_run_name', None),
