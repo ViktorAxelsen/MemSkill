@@ -13,6 +13,8 @@
   <p>
     <a href='https://viktoraxelsen.github.io/MemSkill/'><img src='https://img.shields.io/badge/Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white'></a>
     <a href='https://arxiv.org/abs/2602.02474'><img src='https://img.shields.io/badge/arXiv-2602.02474-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white'></a>
+    <a href="https://huggingface.co/papers/2602.02474"><img src="https://img.shields.io/badge/HuggingFace-Paper-FFD21E?style=for-the-badge&logo=huggingface&logoColor=FFD21E" alt="HuggingFace Paper"></a>
+    <a href="https://deepwiki.com/ViktorAxelsen/MemSkill"><img src="https://img.shields.io/badge/DeepWiki-MemSkill-6B4FBB?style=for-the-badge&logo=readthedocs&logoColor=white" alt="DeepWiki"></a>
     <br>
     <a href="https://github.com/ViktorAxelsen/MemSkill/stargazers"><img src='https://img.shields.io/github/stars/ViktorAxelsen/MemSkill?color=f1e05a&style=for-the-badge&logo=star&logoColor=white' /></a>
     <a href="https://github.com/ViktorAxelsen/MemSkill/forks"><img src='https://img.shields.io/github/forks/ViktorAxelsen/MemSkill?color=2ea44f&style=for-the-badge&logo=git&logoColor=white' /></a>
@@ -55,6 +57,8 @@
 
 ## 📰 News
 
+
+- 🔥 **[2026-02]**: We are honored to be featured in the 🤗 HuggingFace [#3 Paper of the day](https://huggingface.co/papers/2602.02474)
 
 - 🚀 **[2026-02]**: **MemSkill** is officially released — a new paradigm for agent memory that learns reusable skills 🔁 and evolves them from data over time 🧠, improving memory quality and generalization across long, open-ended interactions ✨.
 
