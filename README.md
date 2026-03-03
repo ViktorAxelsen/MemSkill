@@ -14,12 +14,13 @@
     <a href='https://viktoraxelsen.github.io/MemSkill/'><img src='https://img.shields.io/badge/Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white'></a>
     <a href='https://arxiv.org/abs/2602.02474'><img src='https://img.shields.io/badge/arXiv-2602.02474-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white'></a>
     <a href="https://huggingface.co/papers/2602.02474"><img src="https://img.shields.io/badge/HuggingFace-Paper-FFD21E?style=for-the-badge&logo=huggingface&logoColor=FFD21E" alt="HuggingFace Paper"></a>
-    <a href="https://deepwiki.com/ViktorAxelsen/MemSkill"><img src="https://img.shields.io/badge/DeepWiki-MemSkill-6B4FBB?style=for-the-badge&logo=readthedocs&logoColor=white" alt="DeepWiki"></a>
+    <a href="https://huggingface.co/collections/XaiverZ/memskill"><img src="https://img.shields.io/badge/HuggingFace-Collection-FFD21E?style=for-the-badge&logo=huggingface&logoColor=FFD21E" alt="HuggingFace Collection"></a>
     <br>
     <a href="https://github.com/ViktorAxelsen/MemSkill/stargazers"><img src='https://img.shields.io/github/stars/ViktorAxelsen/MemSkill?color=f1e05a&style=for-the-badge&logo=star&logoColor=white' /></a>
     <a href="https://github.com/ViktorAxelsen/MemSkill/forks"><img src='https://img.shields.io/github/forks/ViktorAxelsen/MemSkill?color=2ea44f&style=for-the-badge&logo=git&logoColor=white' /></a>
     <a href="https://github.com/ViktorAxelsen/MemSkill/issues"><img src='https://img.shields.io/github/issues/ViktorAxelsen/MemSkill?color=d73a49&style=for-the-badge&logo=github&logoColor=white' /></a>
-    <a href="https://www.python.org/downloads/release/python-3109/"><img src="https://img.shields.io/badge/PYTHON-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
+    <a href="https://deepwiki.com/ViktorAxelsen/MemSkill"><img src="https://img.shields.io/badge/DeepWiki-MemSkill-6B4FBB?style=for-the-badge&logo=readthedocs&logoColor=white" alt="DeepWiki"></a>
+    <!-- <a href="https://www.python.org/downloads/release/python-3109/"><img src="https://img.shields.io/badge/PYTHON-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a> -->
     <!-- <a href="x" style="text-decoration:none;"><img src="https://img.shields.io/badge/TWITTER-ANNOUNCEMENTS-1DA1F2?style=for-the-badge&logo=x&logoColor=white" alt="Twitter"></a> -->
     <a href="LICENSE"><img src="https://img.shields.io/badge/LICENSE-Apache-2EA44F?style=for-the-badge" alt="License"></a>
   </p>
@@ -57,6 +58,8 @@
 
 ## 📰 News
 
+
+- ⭐ **[2026-03]**: We have released the MemSkill controller weights in our [Hugging Face collection](https://huggingface.co/collections/XaiverZ/memskill), which can now be used directly for inference on suitable datasets. Please note that differences in experimental environments and settings may require some adaptation; when necessary, we recommend retraining and tuning key hyperparameters on a held-out validation split, especially `chunk_size` and the number of selected skills during inference (`action_top_k`), to ensure reliable performance. We hope these resources help advance self-evolving agent memory systems, and we'd be glad to hear from the community.
 
 - 🔥 **[2026-02]**: We are honored to be featured in the 🤗 HuggingFace [#3 Paper of the day](https://huggingface.co/papers/2602.02474)
 
