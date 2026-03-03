@@ -2,6 +2,7 @@
 export CUDA_VISIBLE_DEVICES=0
 
 # --disable-flash-attn \
+# NOTE: chunk-size 256 for Locomo + Qwen
 python main.py \
     --eval-only \
     --action-top-k 5 \
