@@ -351,9 +351,9 @@ We thank the authors and maintainers of **[LoCoMo](https://github.com/snap-resea
 ## 📚 Citation
 
 ```bibtex
-@article{MemSkill,
+@article{zhang2026memskill,
   title={MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents},
-  author={Haozhen Zhang and Quanyu Long and Jianzhu Bao and Tao Feng and Weizhi Zhang and Haodong Yue and Wenya Wang},
+  author={Zhang, Haozhen and Long, Quanyu and Bao, Jianzhu and Feng, Tao and Zhang, Weizhi and Yue, Haodong and Wang, Wenya},
   journal={arXiv preprint arXiv:2602.02474},
   year={2026}
 }
