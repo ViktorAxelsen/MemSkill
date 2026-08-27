@@ -276,7 +276,7 @@ These are the parameters most frequently used in the training/eval `.sh` scripts
 
 > [!NOTE]
 >
-> To reduce the training cost introduced by open-ended skill evolution, one practical option is to use a smaller `--model` together with a larger `--designer-model`. In our experiments, we can still observe an increasing reward curve even when both `--model` and `--designer-model` are small. Generally speaking, however, a larger `--designer-model` makes skill evolution more effective while adding almost no extra training cost, because the designer contributes only a negligible number of LLM calls and token comsumption compared to the controller.
+> To reduce the training cost introduced by open-ended skill evolution, one practical option is to use a smaller `--model` together with a larger `--designer-model`. In our experiments, we can still observe an increasing reward curve even when both `--model` and `--designer-model` are small. Generally speaking, however, a larger `--designer-model` makes skill evolution more effective while adding almost no extra training cost, because the designer contributes only a negligible number of LLM calls and token consumption compared to the controller.
 >
 > Another option is to reduce the number of retrieved memories during training, namely `--mem-top-k`, since the dominant training cost usually comes from evaluating test queries. We also provide `--locomo-train-query-sampling-ratio`, a query-sampling option that can stratify test queries to reduce the evaluation burden during training while preserving stability and effectiveness. We hope these practical insights and experiences help the community follow, reproduce, and adapt MemSkill more easily.
 
