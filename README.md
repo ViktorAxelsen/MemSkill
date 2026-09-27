@@ -60,7 +60,7 @@
 
 ## 📰 News
 
-- 🎉 **[2026-09]**: MemSkill was accepted by NeurIPS'26!
+- 🎉 **[2026-09]: MemSkill was accepted by NeurIPS'26!**
 
 - 🚀 **[2026-03]**: `--locomo-train-query-sampling-ratio` is now available for training-time stratified test-query sampling on LoCoMo. It significantly reduces evaluation cost during training by sampling LoCoMo test queries by category, while leaving the full-evaluation protocol unchanged for `eval-only` and formal testing. For more details, please refer to [Commonly Used Configs](#️-commonly-used-configs).
 
