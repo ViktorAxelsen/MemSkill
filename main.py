@@ -946,6 +946,7 @@ def infer_alfworld_memories(trainer: BaseTrainer, train_data, test_data, args):
         "seed": args.seed
     }
     include_inventory = bool(getattr(trainer.config, "alfworld_include_inventory", True))
+    use_icl_prompt = bool(getattr(trainer.config, "alfworld_use_icl", False))
     max_steps = int(getattr(trainer.config, "alfworld_pair_max_steps", 50))
     workers = int(getattr(trainer.config, "alfworld_pair_b_workers", 0) or 0)
     if workers <= 0:
@@ -963,7 +964,9 @@ def infer_alfworld_memories(trainer: BaseTrainer, train_data, test_data, args):
                 max_steps,
                 llm_args,
                 include_inventory,
-                query_source
+                query_source,
+                task_type=task.get("task_type"),
+                use_icl_prompt=use_icl_prompt
             ): task for task in tasks
         }
         for future in tqdm(as_completed(futures), total=len(futures), desc="ALFWorld eval"):

@@ -1,322 +1,334 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description"
-        content="MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents">
-  <meta name="keywords" content="Large Language Models, Agent Memory, Self-evolving Agents, Agent Skills">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents</title>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-
-    gtag('config', 'G-PYVRSFMDRL');
-  </script>
-
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
-
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <meta name="theme-color" content="#18372e">
+  <title>MemSkill — Learning and Evolving Memory Skills for Self-Evolving Agents</title>
+  <meta name="description" content="MemSkill learns to select, compose, and evolve reusable memory skills for LLM agents. Explore the NeurIPS 2026 paper, architecture, benchmarks, and open-source code.">
+  <meta name="keywords" content="MemSkill, agent memory, self-evolving agents, memory skills, large language models, NeurIPS 2026">
+  <link rel="canonical" href="https://viktoraxelsen.github.io/MemSkill/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MemSkill — Learning to remember. Learning to evolve.">
+  <meta property="og:description" content="Learning and Evolving Memory Skills for Self-Evolving Agents. NeurIPS 2026.">
+  <meta property="og:url" content="https://viktoraxelsen.github.io/MemSkill/">
+  <meta property="og:image" content="https://viktoraxelsen.github.io/MemSkill/static/figs/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MemSkill — Learning and Evolving Memory Skills">
+  <meta name="twitter:description" content="A framework for agent memory that learns which skills to use, and evolves the skills themselves.">
+  <meta name="twitter:image" content="https://viktoraxelsen.github.io/MemSkill/static/figs/social-card.png">
+  <link rel="icon" href="./static/figs/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="./static/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./static/css/fonts.css">
   <link rel="stylesheet" href="./static/css/index.css">
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
+  <script src="./static/js/index.js" defer></script>
 </head>
 <body>
-
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
+<a class="skip-link" href="#main">Skip to content</a>
+<!-- Reusable vector icons: no icon font or third-party JavaScript. -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v16m-6-6 6 6 6-6"/></symbol>
+    <symbol id="i-paper" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8M8 16h6"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 7-5 5 5 5m10-10 5 5-5 5M14 4l-4 16"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.3-4.3-2.2-6-2.7M15 22v-3.9c0-1.1-.3-1.9-.8-2.4 2.8-.3 5.8-1.4 5.8-6.3 0-1.4-.5-2.5-1.3-3.4.1-.3.5-1.6-.1-3.3 0 0-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.4 5.4 2.7 5.4 2.7 4.8 4.4 5.2 5.7 5.3 6a4.9 4.9 0 0 0-1.3 3.4c0 4.9 3 6 5.8 6.3-.5.5-.8 1.2-.8 2.4V22"/></symbol>
+    <symbol id="i-select" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="8" cy="18" r="2" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 10 5-10 5L2 8l10-5Zm-10 9 10 5 10-5M2 16l10 5 10-5"/></symbol>
+    <symbol id="i-evolve" viewBox="0 0 24 24"><path d="M20 8a8 8 0 0 0-14-3L3 8m0-5v5h5M4 16a8 8 0 0 0 14 3l3-3m0 5v-5h-5"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M8 8 3 3m13 5 5-5M8 16l-5 5m13-5 5 5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="brand-symbol" viewBox="0 0 36 36"><rect x="3" y="12" width="22" height="21" rx="6" fill="#b7cca6"/><rect x="9" y="7" width="22" height="21" rx="6" fill="#fafbf7" stroke="#26735b" stroke-width="1.5"/><rect x="15" y="2" width="18" height="19" rx="5" fill="#26735b"/><path d="M20 11h8m-4-4v8" stroke="#edf3d9" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+<header class="site-header">
+  <div class="container nav-shell">
+    <a class="brand" href="#" aria-label="MemSkill home"><svg class="brand-mark" aria-hidden="true"><use href="#brand-symbol"/></svg>MemSkill</a>
+    <nav class="desktop-nav" id="site-nav" aria-label="Main navigation">
+      <a href="#overview">Overview</a><a href="#method">Method</a><a href="#results">Results</a><a href="#skills">Skills</a><a href="#citation">Citation</a>
+    </nav>
+    <a class="nav-code" href="https://github.com/ViktorAxelsen/MemSkill" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>GitHub<svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
   </div>
-  <div class="navbar-menu">
-    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-      <a class="navbar-item" href="https://github.com/ViktorAxelsen/MemSkill">
-      <span class="icon">
-          <i class="fas fa-home"></i>
-      </span>
-      </a>
-
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More Research
-        </a>
-        <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://github.com/ViktorAxelsen/MemSkill">
-            MemSkill
-          </a>
-          <a class="navbar-item" href="https://github.com/ViktorAxelsen/BudgetMem">
-            BudgetMem
-          </a>
+  <div class="reading-progress" aria-hidden="true"></div>
+</header>
+<main id="main">
+  <section class="hero" aria-labelledby="paper-title">
+    <div class="container">
+      <div class="hero-main">
+        <div class="hero-copy">
+          <div class="eyebrow hero-label"><a class="pill" href="https://github.com/ViktorAxelsen/MemSkill#-news" target="_blank" rel="noopener noreferrer"><span class="status-dot" aria-hidden="true"></span>NeurIPS 2026</a><span>Agent memory, reimagined</span></div>
+          <h1 id="paper-title"><span class="hero-name">Mem<span class="skill">Skill</span></span><span class="hero-title">Learning and Evolving Memory Skills for Self-Evolving Agents</span></h1>
+          <p class="hero-description">Memory is a skill. Let agents learn it.<br>A framework that learns which memory skills to use, and evolves the skills themselves through experience.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://arxiv.org/pdf/2602.02474" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-paper"/></svg>Read the paper<svg class="icon arrow" aria-hidden="true"><use href="#i-external"/></svg></a>
+            <a class="button" href="https://github.com/ViktorAxelsen/MemSkill" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg>Explore code</a>
+            <a class="hero-cite" href="#citation" aria-label="Cite this work"><span>Cite<span class="cite-detail"> this work</span></span></a>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="eyebrow art-label"><span>A self-evolving memory system</span><span>Fig. 00</span></div>
+          <svg class="memory-diagram" viewBox="0 0 530 378" role="img" aria-labelledby="loop-title loop-desc">
+            <title id="loop-title">The MemSkill learning and evolution loop</title>
+            <desc id="loop-desc">The controller selects from a shared skill bank. The executor applies those skills to construct memories. Task feedback trains the controller; hard cases guide the designer to refine and expand the skill bank.</desc>
+            <defs>
+              <pattern id="dot-grid" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#bccbb2" opacity=".65"/></pattern>
+              <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="m1 1 7 4-7 4" fill="none" stroke="#7d9a6b" stroke-width="1.5"/></marker>
+              <filter id="node-shadow" x="-20%" y="-30%" width="150%" height="170%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#284f23" flood-opacity=".055"/></filter>
+            </defs>
+            <rect x="4" y="6" width="520" height="362" fill="url(#dot-grid)"/>
+            <circle cx="271" cy="185" r="142" fill="none" stroke="#cbd8bd" stroke-width="1"/>
+            <circle cx="271" cy="185" r="107" fill="none" stroke="#dbe5cf" stroke-width="1"/>
+            <path class="flow-line" d="M139 132v59q0 17 17 17h114" fill="none" stroke="#83a16d" stroke-width="1.4" marker-end="url(#arrow-green)"/>
+            <path class="flow-line" d="M377 248v42q0 17-17 17h-99" fill="none" stroke="#83a16d" stroke-width="1.4" marker-end="url(#arrow-green)"/>
+            <path class="flow-line" d="M81 307H58q-20 0-20-20V22q0-17 17-17h290q17 0 17 17v7" fill="none" stroke="#83a16d" stroke-width="1.4" marker-end="url(#arrow-green)"/>
+            <text x="157" y="186" class="diagram-label" fill="#758367">SELECTED SKILLS</text>
+            <text x="279" y="287" class="diagram-label" fill="#758367">HARD CASES</text>
+            <text x="26" y="229" transform="rotate(-90 26 229)" class="diagram-label" fill="#758367">REFINE + EXPAND</text>
+            <g transform="translate(321 29)">
+              <rect x="8" y="-8" width="153" height="112" rx="8" fill="#e7eddc" stroke="#ccd9bd"/>
+              <rect x="4" y="-4" width="153" height="112" rx="8" fill="#f0f4e8" stroke="#ccd9bd"/>
+              <rect width="153" height="112" rx="8" fill="#fcfdf8" stroke="#c3d2b3"/>
+              <text x="14" y="24" class="diagram-label" fill="#4c6741">SHARED SKILL BANK</text>
+              <rect x="13" y="38" width="58" height="21" rx="4" fill="#e9efde"/><text x="25" y="52" font-size="9" fill="#627b50">INSERT</text>
+              <rect x="77" y="38" width="61" height="21" rx="4" fill="#e9efde"/><text x="88" y="52" font-size="9" fill="#627b50">UPDATE</text>
+              <rect x="13" y="66" width="125" height="28" rx="4" fill="#dce9bc"/><text x="25" y="84" font-size="10" fill="#446432">+ Evolved skills</text>
+            </g>
+            <path d="M317 78h-53" fill="none" stroke="#8ba778" stroke-width="1.3" marker-end="url(#arrow-green)"/>
+            <g class="diagram-node is-active" data-node="select" transform="translate(79 42)" filter="url(#node-shadow)">
+              <rect class="node-background" width="181" height="91" rx="9" fill="#fdfef9" stroke="#c9d7be"/>
+              <rect class="node-number" x="15" y="16" width="25" height="25" rx="6" fill="#e8eedc"/>
+              <text class="number-text" x="22" y="32" font-size="10" fill="#61754c">01</text>
+              <text x="52" y="32" class="diagram-title" fill="#23472f">Controller</text>
+              <text x="16" y="65" class="diagram-small">Learn which skills to use</text>
+            </g>
+            <g class="diagram-node" data-node="apply" transform="translate(270 166)" filter="url(#node-shadow)">
+              <rect class="node-background" width="210" height="88" rx="9" fill="#fdfef9" stroke="#c9d7be"/>
+              <rect class="node-number" x="15" y="16" width="25" height="25" rx="6" fill="#e2ede5"/>
+              <text class="number-text" x="22" y="32" font-size="10" fill="#537c62">02</text>
+              <text x="52" y="32" class="diagram-title" fill="#23472f">Executor</text>
+              <text x="16" y="64" class="diagram-small">Construct skill-guided memories</text>
+            </g>
+            <g class="diagram-node" data-node="evolve" transform="translate(81 263)" filter="url(#node-shadow)">
+              <rect class="node-background" width="180" height="91" rx="9" fill="#fdfef9" stroke="#c9d7be"/>
+              <rect class="node-number" x="15" y="16" width="25" height="25" rx="6" fill="#f0eacf"/>
+              <text class="number-text" x="22" y="32" font-size="10" fill="#877341">03</text>
+              <text x="52" y="32" class="diagram-title" fill="#23472f">Designer</text>
+              <text x="16" y="65" class="diagram-small">Evolve skills from hard cases</text>
+            </g>
+            <circle cx="270" cy="133" r="5" fill="#abc77e" stroke="#fafbf7" stroke-width="3"/>
+            <path d="M270 123v-5m0 25v5m10-15h5m-25 0h-5" stroke="#b8cda0" stroke-width="1.2"/>
+          </svg>
+          <div class="stage-controls" role="group" aria-label="Explore the memory loop">
+            <button type="button" data-stage="select" aria-pressed="true" aria-controls="stage-description"><span>01</span>Select</button>
+            <button type="button" data-stage="apply" aria-pressed="false" aria-controls="stage-description"><span>02</span>Construct</button>
+            <button type="button" data-stage="evolve" aria-pressed="false" aria-controls="stage-description"><span>03</span>Evolve</button>
+          </div>
+          <p class="stage-description" id="stage-description" aria-live="polite">The controller learns to select relevant skills for each text span and its retrieved memories.</p>
+        </div>
+      </div>
+      <div class="hero-bottom"><span class="eyebrow">Learnable skills. Reusable knowledge. Evolving memory.</span><a class="scroll-cue" href="#overview">Explore the research<svg class="icon" aria-hidden="true"><use href="#i-down"/></svg></a></div>
+      <div class="research-team" aria-label="Authors and affiliations">
+        <div class="authors"><span>Haozhen Zhang<sup>1</sup></span><span>Quanyu Long<sup>1</sup></span><span>Jianzhu Bao<sup>1</sup></span><span>Tao Feng<sup>2</sup></span><span>Weizhi Zhang<sup>3</sup></span><span>Haodong Yue<sup>4</sup></span><span>Wenya Wang<sup>1</sup></span></div>
+        <div class="affiliations">
+          <div class="affiliation"><img src="./static/figs/ntu.png" width="840" height="1079" alt="NTU crest"><p><sup>1</sup>Nanyang Technological<br>University</p></div>
+          <div class="affiliation"><img src="./static/figs/uiuc.png" width="81" height="115" alt="Illinois logo"><p><sup>2</sup>University of Illinois<br>Urbana-Champaign</p></div>
+          <div class="affiliation"><img src="./static/figs/uic.png" width="261" height="261" alt="UIC logo"><p><sup>3</sup>University of Illinois<br>Chicago</p></div>
+          <div class="affiliation"><img src="./static/figs/thu.png" width="158" height="159" alt="Tsinghua crest"><p><sup>4</sup>Tsinghua<br>University</p></div>
         </div>
       </div>
     </div>
+  </section>
+  <section class="section overview" id="overview" aria-labelledby="overview-title">
+    <div class="container">
+      <div class="eyebrow"><span class="section-index">01 /</span>The idea</div>
+      <div class="abstract-grid">
+        <div class="abstract-intro"><h2 class="section-title" id="overview-title">Better memory starts<br>with better ways<br>to <em>remember.</em></h2><a class="text-link" href="https://arxiv.org/abs/2602.02474" target="_blank" rel="noopener noreferrer">Read the full abstract<svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></a></div>
+        <div class="abstract-copy">
+          <p>Most agent memory systems rely on fixed, hand-designed operations. MemSkill introduces a different approach: <strong>learnable, reusable memory skills</strong> that guide how an agent extracts, consolidates, and revises information.</p>
+          <p>Instead of applying a fixed procedure after every turn, MemSkill processes larger spans of interaction history and composes a small set of relevant skills to construct memory in one pass.</p>
+          <p>The skill bank is a living component. Skills are <strong>refined and expanded from hard cases</strong>, allowing the system to improve both how it uses skills and what those skills are. The result is adaptable memory across long conversations, document-based reasoning, and embodied interaction.</p>
+        </div>
+      </div>
+      <div class="principles">
+        <article class="principle"><span class="principle-number">01</span><h3>Learn what to use</h3><p>Select context-relevant skills from a shared bank, guided by downstream task feedback.</p></article>
+        <article class="principle"><span class="principle-number">02</span><h3>Remember in one pass</h3><p>Compose selected skills over a text span to produce structured memory updates.</p></article>
+        <article class="principle"><span class="principle-number">03</span><h3>Get better with experience</h3><p>Turn recurring failures into refined skills and new ways of constructing memory.</p></article>
+      </div>
+      <figure class="paper-figure">
+        <div class="figure-top"><span>FIG. 01 / A NEW MEMORY PARADIGM</span><a class="figure-expand" href="./static/figs/intro.png" data-figure data-title="From handcrafted operations to memory skills">Expand figure<svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></a></div>
+        <a class="figure-image" href="./static/figs/intro.png" data-figure data-title="From handcrafted operations to memory skills" aria-label="Enlarge comparison of prior memory methods and MemSkill"><picture><source srcset="./static/figs/intro.webp" type="image/webp"><img src="./static/figs/intro.png" alt="Prior approaches repeatedly interleave turn-level handcrafted operations and LLM calls. MemSkill selects reusable skills and constructs memories from a larger text span in one pass." width="2841" height="1365" loading="lazy" decoding="async"></picture></a>
+        <figcaption><strong>From fixed operations to reusable skills.</strong> A shift from turn-level, handcrafted processing to span-level, skill-conditioned memory generation.</figcaption>
+      </figure>
+    </div>
+  </section>
 
-  </div>
-</nav>
+  <section class="section method" id="method" aria-labelledby="method-title">
+    <div class="container">
+      <div class="eyebrow"><span class="section-index">02 /</span>The framework</div>
+      <div class="section-heading"><h2 class="section-title" id="method-title">Three components.<br>One <em>evolving system.</em></h2><p>A controller, an executor, and a designer work together to improve memory construction in a closed loop.</p></div>
+      <div class="component-grid">
+        <article class="component"><span class="component-step">01 / SELECT</span><div class="component-icon"><svg class="icon" aria-hidden="true"><use href="#i-select"/></svg></div><h3>Controller</h3><p>Uses the current text span and retrieved memories to select a small set of relevant skills. Task rewards improve its selection policy.</p><span class="component-tag">Reinforcement learning</span></article>
+        <article class="component"><span class="component-step">02 / CONSTRUCT</span><div class="component-icon"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg></div><h3>Executor</h3><p>Applies the selected skills with an LLM to produce structured memory updates in a single step, span by span.</p><span class="component-tag">Skill-conditioned generation</span></article>
+        <article class="component"><span class="component-step">03 / EVOLVE</span><div class="component-icon"><svg class="icon" aria-hidden="true"><use href="#i-evolve"/></svg></div><h3>Designer</h3><p>Reviews representative hard cases, refines existing skills, and proposes new ones to expand the shared skill bank.</p><span class="component-tag">Evolution through feedback</span></article>
+      </div>
+      <figure class="paper-figure">
+        <div class="figure-top"><span>FIG. 02 / THE MEMSKILL ARCHITECTURE</span><a class="figure-expand" href="./static/figs/model.png" data-figure data-title="MemSkill architecture">Expand figure<svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></a></div>
+        <a class="figure-image" href="./static/figs/model.png" data-figure data-title="MemSkill architecture" aria-label="Enlarge the complete MemSkill architecture"><picture><source srcset="./static/figs/model.webp" type="image/webp"><img src="./static/figs/model.png" alt="MemSkill architecture: a controller selects Top-K skills for an executor to update a trace-specific memory bank. Task rewards optimize the controller, while a designer mines a hard-case buffer to evolve the shared skill bank." width="2859" height="1278" loading="lazy" decoding="async"></picture></a>
+        <figcaption><strong>A closed loop of learning and evolution.</strong> The memory bank stores trace-specific information; the shared skill bank stores reusable guidance for how to remember.</figcaption>
+      </figure>
+    </div>
+  </section>
 
-
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents</h1>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a>Haozhen Zhang</a><sup>1</sup>,</span>
-            <span class="author-block">
-              <a>Quanyu Long</a><sup>1</sup>,</span>
-            <span class="author-block">
-              <a>Jianzhu Bao</a><sup>1</sup>,</span>
-            <span class="author-block">
-              <a>Tao Feng</a><sup>2</sup>,</span>
-            <span class="author-block">
-              <a>Weizhi Zhang</a><sup>3</sup>,</span>
-            <span class="author-block">
-              <a>Haodong Yue</a><sup>4</sup>,</span>
-            <span class="author-block">
-              <a>Wenya Wang</a><sup>1</sup>,
-            </span>
-          </div>
-
-          <div class="publication-logos" style="margin: 24px 0 14px; display: flex; justify-content: center; align-items: center; gap: 36px; flex-wrap: wrap;">
-            <img src="./static/figs/ntu.png" alt="NTU" style="height: 78px; width: 78px; object-fit: contain;"/>
-            <img src="./static/figs/uiuc.png" alt="UIUC" style="height: 66px; width: 66px; object-fit: contain;"/>
-            <img src="./static/figs/uic.png" alt="UIC" style="height: 76px; width: 76px; object-fit: contain;"/>
-            <img src="./static/figs/thu.png" alt="Tsinghua" style="height: 78px; width: 78px; object-fit: contain;"/>
-          </div>
-
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>Nanyang Technological University</span><br>
-            <span class="author-block"><sup>2</sup>University of Illinois at Urbana-Champaign</span><br>
-            <span class="author-block"><sup>3</sup>University of Illinois Chicago</span><br>
-            <span class="author-block"><sup>4</sup>Tsinghua University</span>
-          </div>
-
-          <div class="column has-text-centered">
-            <div class="publication-links">
-              <span class="link-block">
-                <a href="https://arxiv.org/abs/2602.02474"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="https://github.com/ViktorAxelsen/MemSkill"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code</span>
-                </a>
-              </span>
-              <!-- <span class="link-block">
-                <a href="xxx"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-X"></i>
-                  </span>
-                  <span>Twitter</span>
-                  </a>
-              </span> -->
+  <section class="section results" id="results" aria-labelledby="results-title">
+    <div class="container">
+      <div class="eyebrow"><span class="section-index">03 /</span>The evidence</div>
+      <div class="section-heading"><h2 class="section-title" id="results-title">Stronger memory.<br>Across <em>settings.</em></h2><p>From conversational recall to embodied tasks. Trained with LLaMA, with skills transferred directly to Qwen without additional training.</p></div>
+      <div class="results-toolbar">
+        <div class="tabs" role="tablist" aria-label="Benchmark base model" data-tab-group="models">
+          <button type="button" role="tab" id="tab-llama" aria-selected="true" aria-controls="panel-llama" data-tab="llama">LLaMA 3.3 · 70B</button>
+          <button type="button" role="tab" id="tab-qwen" aria-selected="false" aria-controls="panel-qwen" tabindex="-1" data-tab="qwen">Qwen3-Next · 80B-A3B</button>
+        </div>
+      </div>
+      <!-- Tables stay in HTML for search engines and no-JS readers. -->
+      <div id="panel-llama" role="tabpanel" aria-labelledby="tab-llama" tabindex="0">
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">LoCoMo<span>LLM JUDGE</span></div><strong class="metric-value">53.82</strong><p class="metric-delta">+8.27% relative improvement <span>vs. best compared baseline</span></p></div>
+          <div class="metric"><div class="metric-label">LongMemEval<span>LLM JUDGE</span></div><strong class="metric-value">60.89</strong><p class="metric-delta">+7.88% relative improvement <span>vs. best compared baseline</span></p></div>
+          <div class="metric"><div class="metric-label">ALFWorld<span>AVG. SUCCESS RATE</span></div><strong class="metric-value">80.36<span class="sr-only"> percent</span></strong><p class="metric-delta">+3.26% relative improvement <span>vs. best compared baseline</span></p></div>
+        </div>
+        <div class="table-scroll" role="region" aria-label="LLaMA benchmark comparison, scroll horizontally for all metrics" tabindex="0">
+          <table class="benchmark-table">
+            <caption>LLaMA 3.3 70B-Instruct · Main comparison</caption>
+            <colgroup><col class="method-column"><col class="metric-column" span="6"></colgroup>
+            <thead><tr><th rowspan="2" scope="col">Method</th><th colspan="2" scope="colgroup">LoCoMo</th><th colspan="2" scope="colgroup">LongMemEval <sup>†</sup></th><th colspan="2" scope="colgroup">ALFWorld <sup>‡</sup></th></tr><tr><th scope="col">F1 ↑</th><th scope="col">L-J ↑</th><th scope="col">F1 ↑</th><th scope="col">L-J ↑</th><th scope="col">SEEN SR ↑</th><th scope="col">UNSEEN SR ↑</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">No-Memory</th><td>—</td><td>—</td><td>—</td><td>—</td><td>62.14</td><td>73.88</td></tr>
+              <tr><th scope="row">CoN</th><td>30.86</td><td>41.72</td><td>30.78</td><td>56.44</td><td>75.00</td><td>80.60</td></tr>
+              <tr><th scope="row">ReadAgent</th><td>28.63</td><td>38.25</td><td>24.48</td><td>42.62</td><td>62.86</td><td>71.64</td></tr>
+              <tr><th scope="row">MemoryBank</th><td>36.80</td><td>44.43</td><td>30.56</td><td>41.96</td><td>60.71</td><td>66.42</td></tr>
+              <tr><th scope="row">A-MEM</th><td>39.39</td><td>49.71</td><td>25.83</td><td>38.04</td><td>62.86</td><td>70.15</td></tr>
+              <tr><th scope="row">Mem0</th><td>25.48</td><td>34.58</td><td>30.25</td><td>46.81</td><td>74.29</td><td>81.34</td></tr>
+              <tr><th scope="row">LangMem</th><td>30.91</td><td>35.82</td><td>18.36</td><td>24.35</td><td>72.86</td><td>79.85</td></tr>
+              <tr><th scope="row">MemoryOS</th><td>41.39</td><td>48.64</td><td>17.59</td><td>39.83</td><td>57.86</td><td>65.67</td></tr>
+              <tr class="ours"><th scope="row">MemSkill<span class="ours-label">OURS</span></th><td><strong>44.21</strong></td><td><strong>53.82</strong></td><td><strong>31.12</strong></td><td><strong>60.89</strong></td><td><strong>77.14</strong></td><td><strong>83.58</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="panel-qwen" role="tabpanel" aria-labelledby="tab-qwen" tabindex="0" hidden>
+        <div class="metrics">
+          <div class="metric"><div class="metric-label">LoCoMo<span>LLM JUDGE</span></div><strong class="metric-value">54.14</strong><p class="metric-delta">+6.24% relative improvement <span>vs. best compared baseline</span></p></div>
+          <div class="metric"><div class="metric-label">LongMemEval<span>LLM JUDGE</span></div><strong class="metric-value">60.40</strong><p class="metric-delta">+30.74% relative improvement <span>vs. best compared baseline</span></p></div>
+          <div class="metric"><div class="metric-label">ALFWorld<span>AVG. SUCCESS RATE</span></div><strong class="metric-value">81.29<span class="sr-only"> percent</span></strong><p class="metric-delta">+9.82% relative improvement <span>vs. best compared baseline</span></p></div>
+        </div>
+        <div class="table-scroll" role="region" aria-label="Qwen benchmark comparison, scroll horizontally for all metrics" tabindex="0">
+          <table class="benchmark-table">
+            <caption>Qwen3-Next 80B-A3B-Instruct · Transfer evaluation only</caption>
+            <colgroup><col class="method-column"><col class="metric-column" span="6"></colgroup>
+            <thead><tr><th rowspan="2" scope="col">Method</th><th colspan="2" scope="colgroup">LoCoMo</th><th colspan="2" scope="colgroup">LongMemEval <sup>†</sup></th><th colspan="2" scope="colgroup">ALFWorld <sup>‡</sup></th></tr><tr><th scope="col">F1 ↑</th><th scope="col">L-J ↑</th><th scope="col">F1 ↑</th><th scope="col">L-J ↑</th><th scope="col">SEEN SR ↑</th><th scope="col">UNSEEN SR ↑</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">No-Memory</th><td>—</td><td>—</td><td>—</td><td>—</td><td>63.57</td><td>60.45</td></tr>
+              <tr><th scope="row">CoN</th><td>38.46</td><td>50.96</td><td><strong>29.19</strong></td><td>44.06</td><td>77.14</td><td>70.90</td></tr>
+              <tr><th scope="row">ReadAgent</th><td>25.89</td><td>34.26</td><td>24.13</td><td>42.25</td><td>73.57</td><td>65.67</td></tr>
+              <tr><th scope="row">MemoryBank</th><td>29.56</td><td>44.15</td><td>8.45</td><td>26.37</td><td>63.57</td><td>52.24</td></tr>
+              <tr><th scope="row">A-MEM</th><td>36.43</td><td>50.30</td><td>13.84</td><td>36.59</td><td>55.71</td><td>54.48</td></tr>
+              <tr><th scope="row">Mem0</th><td>23.29</td><td>33.68</td><td>27.36</td><td>46.20</td><td>71.43</td><td>64.93</td></tr>
+              <tr><th scope="row">LangMem</th><td>28.17</td><td>32.94</td><td>18.35</td><td>23.86</td><td>73.57</td><td>64.18</td></tr>
+              <tr><th scope="row">MemoryOS</th><td>39.86</td><td>47.37</td><td>15.97</td><td>39.25</td><td>62.14</td><td>50.75</td></tr>
+              <tr class="ours"><th scope="row">MemSkill<span class="ours-label">OURS</span></th><td><strong>42.08</strong></td><td><strong>54.14</strong></td><td>25.29</td><td><strong>60.40</strong></td><td><strong>85.71</strong></td><td><strong>76.87</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="table-footnote">
+        <p><strong>Metrics.</strong> F1: token-level F1; L-J: LLM-judge score; SR: success rate (%). ↑ Higher is better; — not reported. Bold marks the best score per column.</p>
+        <p><strong>Evaluation.</strong> <sup>†</sup> MemSkill on LongMemEval uses LoCoMo-trained skills without further training. Qwen results transfer from LLaMA without retraining. <sup>‡</sup> ALFWorld uses in-context demonstrations.</p>
+        <p><a href="https://arxiv.org/pdf/2602.02474v2#page=6" target="_blank" rel="noopener noreferrer">Source: paper v2, Table 1 ↗</a></p>
+      </div>
+      <div class="transfer">
+        <div class="transfer-copy"><div class="eyebrow">Beyond the training distribution</div><h3>Skills that travel<br>beyond <em>conversation.</em></h3><p>The LoCoMo-trained skill bank transfers directly to HotpotQA: a shift from dialogue to document-centric QA. Compare 50, 100, and 200 concatenated documents, and explore how the number of selected skills affects performance.</p><a class="text-link" href="https://arxiv.org/pdf/2602.02474v2#page=7" target="_blank" rel="noopener noreferrer">See the transfer study<svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></a></div>
+        <div class="transfer-chart">
+          <div class="chart-toolbar"><strong>HotpotQA · LLM-judge score</strong><label for="skill-budget">Skills<select id="skill-budget"><option value="7">K = 7</option><option value="5">K = 5</option><option value="3">K = 3</option></select></label></div>
+          <div class="chart-legend"><span><i class="swatch" aria-hidden="true"></i>MemSkill</span><span><i class="swatch memoryos" aria-hidden="true"></i>MemoryOS</span><span><i class="swatch amem" aria-hidden="true"></i>A-MEM</span></div>
+          <div class="chart-plot">
+            <div class="chart-grid" aria-hidden="true">
+              <div style="--tick:100%"><span>75</span></div>
+              <div style="--tick:75%"><span>70</span></div>
+              <div style="--tick:50%"><span>65</span></div>
+              <div style="--tick:25%"><span>60</span></div>
+              <div style="--tick:0%"><span>55</span></div>
             </div>
-
+            <div class="chart-groups" id="transfer-bars">
+              <div class="chart-group"><div class="bar-set"><div class="chart-bar ours" data-context="50" style="--value:67.57"><span><span class="sr-only">MemSkill: </span>67.57</span></div><div class="chart-bar memoryos" style="--value:66.02"><span><span class="sr-only">MemoryOS: </span>66.02</span></div><div class="chart-bar amem" style="--value:65.63"><span><span class="sr-only">A-MEM: </span>65.63</span></div></div><p class="bar-label">50 documents</p></div>
+              <div class="chart-group"><div class="bar-set"><div class="chart-bar ours" data-context="100" style="--value:71.48"><span><span class="sr-only">MemSkill: </span>71.48</span></div><div class="chart-bar memoryos" style="--value:67.19"><span><span class="sr-only">MemoryOS: </span>67.19</span></div><div class="chart-bar amem" style="--value:66.80"><span><span class="sr-only">A-MEM: </span>66.80</span></div></div><p class="bar-label">100 documents</p></div>
+              <div class="chart-group"><div class="bar-set"><div class="chart-bar ours" data-context="200" style="--value:67.97"><span><span class="sr-only">MemSkill: </span>67.97</span></div><div class="chart-bar memoryos" style="--value:60.55"><span><span class="sr-only">MemoryOS: </span>60.55</span></div><div class="chart-bar amem" style="--value:61.72"><span><span class="sr-only">A-MEM: </span>61.72</span></div></div><p class="bar-label">200 documents</p></div>
+            </div>
           </div>
+          <p class="chart-axis-note">Y-axis: 55–75 · LLaMA 3.3 70B · No HotpotQA training · Paper v2, Fig. 3</p><p class="sr-only" id="chart-announcement" aria-live="polite"></p>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            MemSkill shifts agent memory from turn-level, hand-designed operations to a new paradigm of span-level, skill-conditioned generation. Instead of applying a fixed procedure after every single turn, MemSkill groups interaction history into larger spans and conditions memory construction on a composed set of skills, making memory extraction more scalable, reusable, and easier to adapt across tasks and domains.
-          </p>
-          <p>
-            Crucially, MemSkill treats the skill bank as a living component: skills are not only invoked but also iteratively refined and expanded from hard cases, so the system can continually improve without relying on extensive manual redesign. Across long conversations, long-form text, and embodied interaction, this approach yields stronger memory and more robust downstream behavior, pointing toward self-evolving memory management for large language model agents.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-              <h2 class="title is-3">Overview</h2>
-              <div class="content has-text-justified">
-                  <p>
-                    Prior methods interleave handcrafted operations with LLM calls to incrementally extract and revise memory turn by turn, while MemSkill selects a small set of skills from a shared skill bank and applies them in one pass to produce skill-guided memories.
-                  </p>
-              </div>
-              <div>
-                  <img src="./static/figs/intro.png" alt="model figure" width="800px"/>
-                  <p><b>Comparison between (a) prior turn-level, handcrafted operations and (b) MemSkill's span-level, skill-conditioned generation.</b></p>
-              </div>
-          </div>
       </div>
     </div>
   </section>
-
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">MemSkill Architecture</h2>
-        <div class="content has-text-justified">
-          <p>
-            MemSkill is built around a shared skill bank and three cooperating components. Given an interaction trace, we process it span by span: for each span, a controller learns to select a small set of relevant skills based on the current span and retrieved memories, and an LLM-based executor conditions on the selected skills to generate skill-guided memory for that span in a single step. In parallel, a designer periodically reviews representative hard cases collected during training and uses them to refine existing skills and propose new ones, expanding the skill bank over time. Together, this yields a closed loop where the agent improves both how it uses skills and what the skills are, enabling progressively stronger memory construction without relying on a fixed, hand-designed operation pipeline.
-          </p>
+  <section class="section skills" id="skills" aria-labelledby="skills-title">
+    <div class="container">
+      <div class="eyebrow"><span class="section-index">04 /</span>Inside the skill bank</div>
+      <div class="section-heading"><h2 class="section-title" id="skills-title">Learning <em>how</em><br>to remember.</h2><p>Evolved skills capture reusable instructions for constructing memory. Explore behaviors that emerge from conversation and embodied tasks.</p></div>
+      <div class="tabs" role="tablist" aria-label="Skill examples by domain" data-tab-group="skills">
+        <button type="button" role="tab" id="tab-conversation" aria-selected="true" aria-controls="panel-conversation" data-tab="conversation">Conversation · LoCoMo</button>
+        <button type="button" role="tab" id="tab-embodied" aria-selected="false" aria-controls="panel-embodied" tabindex="-1" data-tab="embodied">Embodied tasks · ALFWorld</button>
+      </div>
+      <div class="skill-panels">
+        <div class="skill-grid" id="panel-conversation" role="tabpanel" aria-labelledby="tab-conversation" tabindex="0">
+          <article class="skill-card"><div class="skill-card-top"><span>SKILL 01 / TEMPORAL CONTEXT</span><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg></div><h3>Capture temporal context</h3><dl><div><dt>Purpose</dt><dd>Preserve the dates, times, durations, and sequence of events or facts.</dd></div><div><dt>When to use</dt><dd>A text span mentions an event or activity with associated temporal information.</dd></div><div><dt>How to apply</dt><dd>Identify the key temporal elements and record them concisely, keeping relevant ordering relationships.</dd></div><div><dt>Constraint</dt><dd>Use explicitly stated time information. Avoid inferring dates or durations that the text does not provide.</dd></div></dl></article>
+          <article class="skill-card"><div class="skill-card-top"><span>SKILL 02 / ACTIVITY DETAILS</span><svg class="icon" aria-hidden="true"><use href="#i-activity"/></svg></div><h3>Capture activity details</h3><dl><div><dt>Purpose</dt><dd>Keep the context that makes an activity specific and useful to retrieve later.</dd></div><div><dt>When to use</dt><dd>An activity or event appears with details about its participants, location, or context.</dd></div><div><dt>How to apply</dt><dd>Extract the activity type, location, participants, timing, and relevant contextual information.</dd></div><div><dt>Constraint</dt><dd>Keep details specific and concise. Preserve what is stated without inventing missing context.</dd></div></dl></article>
         </div>
-        <div>
-          <img src="./static/figs/model.png" alt="model figure" width="800px"/>
-                  <p><b>MemSkill architecture overview.</b></p>
+        <div class="skill-grid" id="panel-embodied" role="tabpanel" aria-labelledby="tab-embodied" tabindex="0" hidden>
+          <article class="skill-card"><div class="skill-card-top"><span>SKILL 03 / ACTION CONSTRAINTS</span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg></div><h3>Capture action constraints</h3><dl><div><dt>Purpose</dt><dd>Preserve conditions on actions, including object states and movements needed to complete a task.</dd></div><div><dt>When to use</dt><dd>The input includes constraints that matter for future steps of an embodied task.</dd></div><div><dt>How to apply</dt><dd>Identify each action and its constraints, then create a memory pairing the action with relevant conditions.</dd></div><div><dt>Constraint</dt><dd>Keep task-relevant constraints and update existing memories when new information is available.</dd></div></dl></article>
+          <article class="skill-card"><div class="skill-card-top"><span>SKILL 04 / OBJECT LOCATIONS</span><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></div><h3>Track object location</h3><dl><div><dt>Purpose</dt><dd>Track where task-relevant objects are and what state they are in.</dd></div><div><dt>When to use</dt><dd>A text span mentions an object's location or state that is needed for future task steps.</dd></div><div><dt>How to apply</dt><dd>Identify the object, location, and state, and preserve them together as a structured memory item.</dd></div><div><dt>Constraint</dt><dd>Track only relevant objects. Revise location memories when new observations provide an update.</dd></div></dl></article>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-
-
-
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-              <h2 class="title is-3">Comparison Experiments</h2>
-              <div class="content has-text-justified">
-                  <p>
-                      Across LoCoMo, LongMemEval, and ALFWorld, MemSkill delivers the strongest overall results among all compared methods. On the conversational benchmarks, MemSkill achieves the best LLM-judge scores on both LoCoMo and LongMemEval within each base-model block, indicating higher-quality constructed memories than hand-designed systems such as MemoryBank, A-MEM, and MemoryOS. On ALFWorld, MemSkill also reaches the highest success rates on both seen and unseen splits, showing that skill-guided memory helps not only offline querying but also long-horizon embodied decision making. Notably, MemSkill is trained only with LLaMA, yet its learned skill bank transfers to Qwen without any additional training and remains highly competitive, demonstrating strong generalization across base models and suggesting that the evolved skills capture reusable memory behaviors rather than benchmark-specific heuristics.
-                  </p>
-              </div>
-              <img src="./static/figs/exp.png" alt="experimental results" width="800px"/>
-                  <p><b>Experimental results on LoCoMo, LongMemEval, and ALFWorld.</b></p>
-          </div>
-      </div>
+      <div class="skills-footer"><p>Adapted from the evolved skills in the paper. Each skill specifies when and how to remember.</p><a class="text-link" href="./static/figs/case.png" data-figure data-title="Evolved memory skills: LoCoMo and ALFWorld">View the original case study<svg class="icon" aria-hidden="true"><use href="#i-expand"/></svg></a></div>
     </div>
   </section>
 
-
-
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-              <h2 class="title is-3">Skill Generation Under Distribution Shift</h2>
-              <div class="content has-text-justified">
-                  <p>
-                    We further test whether the skill bank learned on LoCoMo remains effective under a clear shift in interaction format and evidence structure by transferring it directly to HotpotQA. We report results on three increasingly difficult settings with 50, 100, and 200 concatenated documents.
-                  </p>
-                  <p>
-                    Across all three context lengths, MemSkill consistently outperforms both baselines, with the margin becoming most pronounced in the hardest 200-document setting. In addition, varying the number of selected skills provides a lightweight sensitivity check: performance generally improves as we increase the skill budget, and the best results are achieved with larger Top-$K$ (typically $K{=}7$). These findings indicate that the learned skills transfer beyond dialogue-style memory benchmarks and remain useful for document-centric QA, while the ability to compose more skills becomes increasingly valuable as context difficulty grows.
-                  </p>
-              </div>
-              <img src="./static/figs/gen.png" alt="cost rewards" width="800px"/>
-                  <p><b>Extensive analysis of skill generation under distribution shift</b></p>
-          </div>
+  <section class="section citation" id="citation" aria-labelledby="citation-title">
+    <div class="container">
+      <div class="eyebrow"><span class="section-index">05 /</span>Explore &amp; build</div>
+      <div class="section-heading"><h2 class="section-title" id="citation-title">Build on <em>MemSkill.</em></h2><p>Read the research, explore the implementation, and experiment with learned memory skills.</p></div>
+      <div class="resources">
+        <a class="resource" href="https://arxiv.org/abs/2602.02474" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-paper"/></svg><div><h3>The paper</h3><p>Method, experiments &amp; analysis</p></div><svg class="icon arrow" aria-hidden="true"><use href="#i-external"/></svg></a>
+        <a class="resource" href="https://github.com/ViktorAxelsen/MemSkill" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><div><h3>The code</h3><p>Implementation &amp; getting started</p></div><svg class="icon arrow" aria-hidden="true"><use href="#i-external"/></svg></a>
+        <a class="resource" href="https://huggingface.co/collections/XaiverZ/memskill" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg><div><h3>The checkpoints</h3><p>Pretrained controller weights</p></div><svg class="icon arrow" aria-hidden="true"><use href="#i-external"/></svg></a>
+      </div>
+      <div class="citation-grid" id="BibTeX">
+        <div><h3>Cite this work</h3><p>If MemSkill is useful in your research, please consider citing our paper.</p></div>
+        <div class="citation-block"><div class="citation-toolbar"><span>BibTeX / memskill.bib</span><button class="copy-button" id="copy-citation" type="button"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy citation</span></button></div><pre><code id="bibtex">@article{zhang2026memskill,
+  title   = {MemSkill: Learning and Evolving Memory Skills
+             for Self-Evolving Agents},
+  author  = {Zhang, Haozhen and Long, Quanyu and Bao, Jianzhu
+             and Feng, Tao and Zhang, Weizhi and Yue, Haodong
+             and Wang, Wenya},
+  journal = {arXiv preprint arXiv:2602.02474},
+  year    = {2026}
+}</code></pre><p class="copy-status" id="copy-status" role="status" hidden></p></div>
       </div>
     </div>
   </section>
-
-
-
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-              <h2 class="title is-3">Case Study</h2>
-              <div class="content has-text-justified">
-                  <p>
-                    To make MemSkill more interpretable, we inspect the final evolved skill bank and report representative skills learned from LoCoMo and ALFWorld. A key takeaway is that the evolved skills reflect what each setting repeatedly requires memory to preserve, without being manually hard-coded.
-                  </p>
-                  <p>
-                    For LoCoMo, the highlighted skills focus on capturing temporal context and activity details, suggesting that dialogue memory often needs lightweight structure, such as when something happened and the contextual details that make an event retrievable later. For ALFWorld, the skills prioritize action constraints and object locations, indicating that embodied success depends on maintaining a compact, actionable state summary that supports long-horizon execution. Overall, these examples show how skill evolution yields setting-relevant behaviors while keeping the skill bank reusable and transferable.
-                  </p>
-              </div>
-              <img src="./static/figs/case.png" alt="discussion" width="800px"/>
-                  <p><b>Case Study on LoCoMo and ALFWorld</b></p>
-          </div>
-      </div>
-    </div>
-  </section>
-
-
-
-
-
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@article{MemSkill,
-  author    = {Haozhen Zhang and Quanyu Long and Jianzhu Bao and Tao Feng and Weizhi Zhang and Haodong Yue and Wenya Wang},
-  title     = {MemSkill: Learning and Evolving Memory Skills for Self-Evolving Agents},
-  journal   = {arXiv preprint arXiv:2602.02474},
-  year      = {2026},
-}</code></pre>
-  </div>
-</section>
-
-
-<footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-      <a class="icon-link"
-         href="https://arxiv.org/abs/2602.02474">
-        <i class="fas fa-file-pdf"></i>
-      </a>
-      <a class="icon-link" href="https://github.com/ViktorAxelsen/MemSkill" class="external-link" disabled>
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            Acknowledgement: this website is based on the template from <a
-            href="https://github.com/nerfies/nerfies.github.io">here</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+</main>
+<footer class="site-footer">
+  <div class="container"><div class="footer-main"><a class="brand" href="#"><svg class="brand-mark" aria-hidden="true"><use href="#brand-symbol"/></svg>MemSkill</a><span class="footer-tagline">Learning to remember. Learning to evolve.</span><div class="footer-links"><a href="https://arxiv.org/abs/2602.02474" target="_blank" rel="noopener noreferrer">arXiv ↗</a><a href="https://github.com/ViktorAxelsen/MemSkill" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></div><div class="footer-bottom"><span>MemSkill · 2026</span><span>Original project page inspired by <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener noreferrer">Nerfies</a>.</span></div></div>
 </footer>
-
+<dialog class="figure-dialog" id="figure-dialog" aria-labelledby="dialog-title">
+  <div class="dialog-toolbar"><h2 id="dialog-title">Research figure</h2><div class="dialog-actions"><button type="button" id="figure-zoom" aria-pressed="false">Actual size</button><a id="figure-original" href="./static/figs/model.png" target="_blank" rel="noopener noreferrer">Open original<svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></a><button type="button" class="dialog-close" aria-label="Close figure" autofocus><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div></div><div class="dialog-image-wrap" tabindex="0" aria-label="Figure, scroll to explore at actual size"><img id="dialog-image" alt=""></div>
+</dialog>
+<noscript><style>.stage-controls,.tabs,#copy-citation,.chart-toolbar label,.menu-toggle{display:none}#panel-qwen[hidden],#panel-embodied[hidden]{display:block!important;margin-top:30px}@media(max-width:760px){.desktop-nav{display:flex;position:static;padding:0;border:0;box-shadow:none;flex-wrap:nowrap;overflow:auto;width:100%;order:3}.desktop-nav a{padding:8px;flex:0 0 auto;font-size:11px}.nav-shell{flex-wrap:wrap;gap:0}.site-header{height:104px}.nav-code{padding-top:10px}}</style></noscript>
 </body>
 </html>

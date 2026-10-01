@@ -219,7 +219,7 @@ class BaseTrainer:
 
     def _setup_logging(self) -> logging.Logger:
         """Setup logging to both console and file"""
-        logger = logging.getLogger('AgenticMemory')
+        logger = logging.getLogger('MemSkill')
         logger.setLevel(logging.INFO)
 
         # Clear existing handlers to avoid duplicates
@@ -2078,6 +2078,7 @@ class AlfworldPairTrainer(BaseTrainer):
         }
         max_steps = int(getattr(self.config, "alfworld_pair_max_steps", 50))
         include_inventory = bool(getattr(self.config, "alfworld_include_inventory", True))
+        use_icl_prompt = bool(getattr(self.config, "alfworld_use_icl", False))
 
         results = []
         executor = self._get_eval_pool()
@@ -2091,7 +2092,9 @@ class AlfworldPairTrainer(BaseTrainer):
                 llm_args,
                 include_inventory,
                 query_source,
-                task.get("expert_plan") or []
+                task.get("expert_plan") or [],
+                task_type=task.get("task_type"),
+                use_icl_prompt=use_icl_prompt
             ): task for task in tasks
         }
         for future in tqdm(

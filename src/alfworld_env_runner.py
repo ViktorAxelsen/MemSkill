@@ -1,11 +1,14 @@
 """
 ALFWorld interactive episode runner for LLM-based action selection.
 """
+import json
 import os
 import re
 import sys
 import threading
 import uuid
+from functools import lru_cache
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -15,6 +18,18 @@ import textworld.gym
 
 from alfworld.agents.environment.alfred_tw_env import AlfredDemangler, AlfredInfos
 from llm_utils import get_llm_response_via_api
+
+
+TASK_TYPE_TO_PROMPT_KEY = {
+    "pick_and_place": "put",
+    "pick_clean_then_place": "clean",
+    "pick_heat_then_place": "heat",
+    "pick_cool_then_place": "cool",
+    "look_at_obj": "examine",
+    "pick_two_obj": "puttwo",
+}
+
+INITIAL_THINK_BUDGET = 2
 
 
 def _unwrap_single(value, default):
@@ -57,6 +72,64 @@ def _extract_admissible(info: Dict[str, Any]) -> List[str]:
     return []
 
 
+def _normalize_task_type(task_type: Optional[str]) -> str:
+    return str(task_type or "").strip()
+
+
+def _extract_think_response(response: str) -> Optional[str]:
+    text = str(response or "").strip()
+    if not text:
+        return None
+    line = text.splitlines()[0].strip().strip("`")
+    if line.startswith(">"):
+        line = line[1:].strip()
+    if not line.lower().startswith("think:"):
+        return None
+    return line
+
+
+def _prompt_key_for_task_type(task_type: Optional[str]) -> Optional[str]:
+    text = _normalize_task_type(task_type)
+    for prefix, prompt_key in TASK_TYPE_TO_PROMPT_KEY.items():
+        if text.startswith(prefix):
+            return prompt_key
+    return None
+
+
+@lru_cache(maxsize=1)
+def _load_react_prompt_bank() -> Dict[str, str]:
+    prompt_path = Path(__file__).resolve().parent.parent / "prompts" / "alfworld_3prompts.json"
+    with open(prompt_path, "r", encoding="utf-8-sig") as handle:
+        payload = json.load(handle)
+    return {str(key): str(value) for key, value in payload.items()}
+
+
+def _build_react_demo_prefix(task_type: Optional[str]) -> str:
+    prompt_key = _prompt_key_for_task_type(task_type)
+    if not prompt_key:
+        return ""
+    try:
+        prompt_bank = _load_react_prompt_bank()
+    except Exception:
+        return ""
+    demo_keys = [f"react_{prompt_key}_1", f"react_{prompt_key}_0"]
+    examples: List[str] = []
+    for key in demo_keys:
+        example = str(prompt_bank.get(key, "")).strip()
+        if not example:
+            return ""
+        examples.append(example)
+    prefix_lines = [
+        "You are controlling a text-based ALFWorld environment.",
+        "The examples below show a ReAct-style solving pattern with brief planning before acting.",
+        "For the current task, you may optionally start with a short line that begins with 'think:' before your first real action.",
+        "When you act, you must choose exactly one action from the admissible actions list and copy it verbatim.",
+        "Here are two examples.",
+        "",
+    ]
+    return "\n".join(prefix_lines).rstrip() + "\n\n" + "\n\n".join(examples)
+
+
 def _parse_action_response(response: str, admissible: List[str]) -> str:
     text = (response or "").strip()
     if not text:
@@ -82,13 +155,27 @@ def _parse_action_response(response: str, admissible: List[str]) -> str:
 def _build_action_prompt(objective: str, retrieved_memories: List[str],
                          trajectory_text: str, inventory: str,
                          admissible: List[str],
-                         expert_plan: Optional[List[str]] = None) -> str:
-    lines = [
-        "You are controlling a text-based ALFWorld environment.",
-        "Your job: choose the NEXT action as ONE text command.",
-        "Output ONLY the command string, with no extra text.",
-        "You MUST choose an action from the admissible actions list and copy it EXACTLY.",
-    ]
+                         expert_plan: Optional[List[str]] = None,
+                         icl_prefix: str = "",
+                         allow_think: bool = False) -> str:
+    lines: List[str] = []
+    if icl_prefix:
+        lines.append(icl_prefix.strip())
+        lines.extend([
+            "",
+            "Here is the current task.",
+            "",
+            "Your job: choose the NEXT step for the current task.",
+            "When you act, output ONLY the action string, with no extra text.",
+            "Any action you output MUST come from the admissible actions list and match it EXACTLY.",
+        ])
+    else:
+        lines.extend([
+            "You are controlling a text-based ALFWorld environment.",
+            "Your job: choose the NEXT action as ONE text command.",
+            "Output ONLY the command string, with no extra text.",
+            "You MUST choose an action from the admissible actions list and copy it EXACTLY.",
+        ])
 
     if objective:
         lines += ["", "Goal:", objective.strip()]
@@ -111,10 +198,18 @@ def _build_action_prompt(objective: str, retrieved_memories: List[str],
         for cmd in admissible:
             lines.append(f"- {cmd}")
 
-        lines += [
-            "",
-            "Now output exactly one line: the chosen action (must match one item above)."
-        ]
+        if allow_think:
+            lines += [
+                "",
+                "Now output exactly one line.",
+                "- You may output one short line starting with 'think:' only if you still need initial planning before your first real action.",
+                "- Otherwise output the chosen action, and it must match one item above exactly."
+            ]
+        else:
+            lines += [
+                "",
+                "Now output exactly one line: the chosen action (must match one item above)."
+            ]
 
     return "\n".join(lines)
 
@@ -171,7 +266,9 @@ def run_alfworld_episode(gamefile: str,
                          llm_args: Dict[str, Any],
                          include_inventory: bool = True,
                          query_source: str = "first_observation",
-                         expert_plan: Optional[List[str]] = None) -> Dict[str, Any]:
+                         expert_plan: Optional[List[str]] = None,
+                         task_type: Optional[str] = None,
+                         use_icl_prompt: bool = False) -> Dict[str, Any]:
     """Run a single ALFWorld episode with LLM action selection."""
     request_infos = textworld.EnvInfos(
         feedback=True,
@@ -196,6 +293,9 @@ def run_alfworld_episode(gamefile: str,
     env = textworld.gym.make(env_id)
     steps: List[Dict[str, Any]] = []
     total_reward = 0.0
+    env_step_count = 0
+    use_react_icl = bool(use_icl_prompt)
+    react_demo_prefix = ""
     try:
         obs_batch, info_batch = _reset_with_timeout(env, 60.0)
         obs = _unwrap_single(obs_batch, "")
@@ -214,8 +314,16 @@ def run_alfworld_episode(gamefile: str,
             "done": False
         })
 
+        if use_react_icl:
+            react_demo_prefix = _build_react_demo_prefix(task_type)
+            use_react_icl = bool(react_demo_prefix)
+
         trajectory_lines = [str(obs).strip()] if obs else []
-        for step_idx in range(1, max_steps + 1):
+        remaining_initial_thinks = INITIAL_THINK_BUDGET if use_react_icl else 0
+        first_action_taken = False
+        turn_idx = 0
+        while env_step_count < max_steps:
+            turn_idx += 1
             admissible = _extract_admissible(info if isinstance(info, dict) else {})
             inventory = ""
             if include_inventory and isinstance(info, dict):
@@ -231,7 +339,9 @@ def run_alfworld_episode(gamefile: str,
                 trajectory_text="\n".join(trajectory_lines),
                 inventory=inventory or "",
                 admissible=admissible,
-                expert_plan=expert_plan or []
+                expert_plan=expert_plan or [],
+                icl_prefix=react_demo_prefix if use_react_icl else "",
+                allow_think=bool(use_react_icl and not first_action_taken and remaining_initial_thinks > 0)
             )
             response, _, _ = get_llm_response_via_api(
                 prompt=prompt,
@@ -243,11 +353,32 @@ def run_alfworld_episode(gamefile: str,
                 TOP_P=float(llm_args.get("top_p", 1.0)),
                 SEED=int(llm_args.get("seed", 42))
             )
+            think_line = None
+            if use_react_icl and not first_action_taken and remaining_initial_thinks > 0:
+                think_line = _extract_think_response(response)
+
+            if think_line is not None:
+                steps.append({
+                    "step": turn_idx,
+                    "action": think_line,
+                    "observation": "OK.",
+                    "reward": 0.0,
+                    "done": False,
+                    "env_step": False
+                })
+                trajectory_lines.append(f"ACTION: {think_line}")
+                trajectory_lines.append("OBSERVATION: OK.")
+                remaining_initial_thinks -= 1
+                continue
+
             action = _parse_action_response(response, admissible)
             obs_batch, scores, dones, infos = env.step([action])
 
             obs = _unwrap_single(obs_batch, "")
             info = _unwrap_single(infos, {})
+            first_action_taken = True
+            remaining_initial_thinks = 0
+            env_step_count += 1
 
             reward = 0.0
             if isinstance(scores, (list, tuple)) and scores:
@@ -263,11 +394,13 @@ def run_alfworld_episode(gamefile: str,
                 done = bool(dones)
 
             steps.append({
-                "step": step_idx,
+                "step": turn_idx,
                 "action": action,
                 "observation": obs,
                 "reward": float(reward),
-                "done": bool(done)
+                "done": bool(done),
+                "env_step_index": env_step_count,
+                "env_step": True
             })
 
             if action:
@@ -276,14 +409,14 @@ def run_alfworld_episode(gamefile: str,
                 trajectory_lines.append(f"OBSERVATION: {str(obs).strip()}")
 
             if done:
-                print(step_idx, done, total_reward)
+                print(env_step_count, done, total_reward)
                 print("SUCCESS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 break
 
         trajectory = _build_trajectory_text(steps)
         last_step = steps[-1] if steps else {}
         success = bool(last_step.get("done")) and float(last_step.get("reward") or 0.0) == 1.0
-        episode_length = max(len(steps) - 1, 0)
+        episode_length = env_step_count
         return {
             "success": success,
             "total_reward": float(total_reward),

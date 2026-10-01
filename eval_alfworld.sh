@@ -3,6 +3,7 @@ export CUDA_VISIBLE_DEVICES=0
 
 # --disable-flash-attn \
 python main.py \
+    --alfworld-use-icl 1 \
     --memory-cache-suffix "alfworld_eval" \
     --eval-only \
     --inference-session-workers 1 \

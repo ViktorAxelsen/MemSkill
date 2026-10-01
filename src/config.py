@@ -113,6 +113,7 @@ class AgenticMemoryConfig:
         self.alfworld_action_temperature = 0.0  # Action LLM temperature
         self.alfworld_action_top_p = 1.0  # Action LLM top-p
         self.alfworld_include_inventory = True  # Include inventory in chunk text
+        self.alfworld_use_icl = False  # Enable ReAct-lite ICL prompt for ALFWorld
         self.alfworld_eval_query_source = "first_observation"  # objective or first_observation
         # ALFWorld offline pair training settings
         self.alfworld_offline_data = None  # Path to offline expert trajectories
@@ -195,6 +196,8 @@ def get_agentic_memory_args():
                         help='Top-p for ALFWorld action LLM')
     parser.add_argument('--alfworld-include-inventory', type=int, default=1, choices=[0, 1],
                         help='Include inventory in ALFWorld chunk text (1=yes, 0=no)')
+    parser.add_argument('--alfworld-use-icl', type=int, default=0, choices=[0, 1],
+                        help='Enable ReAct-lite ICL prompt for ALFWorld (1=yes, 0=no)')
     parser.add_argument('--alfworld-eval-query-source', type=str, default='first_observation',
                         choices=['objective', 'first_observation'],
                         help='Query source for retrieval in ALFWorld eval')
